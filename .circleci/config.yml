@@ -16,3 +16,23 @@ jobs:
       - run:
           name: Run rspec
           command: bundle exec rspec
+  deploy-circleci:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$75242ef0-fc05-4fd8-af95-469c9cd03e76@git.heroku.com/$first-try-sea.git master
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy-circleci:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
