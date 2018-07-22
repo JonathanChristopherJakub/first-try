@@ -1,0 +1,18 @@
+version: 2
+
+jobs:
+  build:
+    parallelism: 3
+    working_directory: ~/hello
+    docker:
+      - image: circleci/ruby:2.5.1-stretch-node-browsers
+        environment:
+          RAILS_ENV: test
+    steps:
+      - checkout
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install
+      - run:
+          name: Run rspec
+          command: bundle exec rspec
